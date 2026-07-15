@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Chapelet Amour</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ede8e0'/><text y='72' x='50' text-anchor='middle' font-size='72'>📿</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ede8e0'/><text y='72' x='50' text-anchor='middle' font-size='72'>📿</text></svg>">
+<meta name="apple-mobile-web-app-title" content="Chapelet Amour">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap');
+
+:root {
+  --or:#b8913a; --or-vif:#d4aa50; --or-pale:#7a5c28; --or-sombre:#5a3e10;
+  --fond:#ede8e0; --fond2:#e4ddd4; --fond3:#f5f2ed;
+  --verre:rgba(255,255,255,0.55); --verre2:rgba(255,255,255,0.35);
+  --ombre-douce:rgba(180,160,130,0.18); --ombre-med:rgba(150,130,100,0.28);
+  --texte:#4a3a28; --texte-pale:#8a7a68; --texte-or:#9a7430;
+  --nacre:#faf8f4;
+  --glass-border:rgba(255,255,255,0.7);
+  --glass-shadow:0 4px 24px rgba(160,140,110,.15), 0 1px 4px rgba(160,140,110,.1);
+  --glass-inner:inset 0 1px 2px rgba(255,255,255,0.8);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{font-size:16px;}
+@media(min-width:480px){html{font-size:18px;}}
+@media(min-width:768px){html{font-size:20px;}}
+@media(min-width:1024px){html{font-size:22px;}}
+html,body{height:100%;overflow:hidden;background:var(--fond);}
+body{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  color:var(--texte);
+  display:flex;flex-direction:column;align-items:center;
+  max-width:480px;margin:0 auto;
+  background:
+    radial-gradient(ellipse 100% 60% at 30% 0%,rgba(255,248,235,.9) 0%,transparent 60%),
+    radial-gradient(ellipse 80% 50% at 80% 100%,rgba(220,210,195,.7) 0%,transparent 60%),
+    var(--fond);
+}
+
+/* ── ÉCRANS ── */
+.ecran{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  opacity:0;pointer-events:none;transition:opacity .35s;}
+.ecran.actif{opacity:1;pointer-events:all;}
+
+/* ══ MENU ══ */
+#ecran-menu{justify-content:center;padding:28px 20px;gap:20px;}
+.menu-titre{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--texte-or);letter-spacing:.1em;text-align:center;}
+.menu-sous{font-style:italic;font-size:.85rem;color:var(--texte-pale);text-align:center;}
+.grille-m{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:340px;}
+.btn-m{padding:18px 12px;border-radius:20px;
+  border:1.5px solid var(--glass-border);
+  background:var(--verre);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:var(--glass-shadow),var(--glass-inner);
+  cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:7px;}
+.btn-m:active{transform:scale(.95);box-shadow:0 2px 8px var(--ombre-med);}
+.btn-m .ic{font-size:1.8rem;}
+.btn-m .nm{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.1em;text-align:center;line-height:1.4;color:var(--texte);}
+.btn-m .fr{font-style:italic;font-size:.68rem;color:var(--texte-pale);text-align:center;}
+.btn-m[data-s=joyeux]   {background:rgba(220,235,240,.6);}
+.btn-m[data-s=lumineux] {background:rgba(250,240,215,.6);}
+.btn-m[data-s=douloureux]{background:rgba(235,220,220,.6);}
+.btn-m[data-s=glorieux] {background:rgba(220,235,220,.6);}
+
+/* ══ JEU ══ */
+#ecran-jeu{justify-content:flex-start;overflow:hidden;}
+
+#hdr{width:100%;padding:10px 16px 7px;
+  border-bottom:1px solid rgba(180,160,130,.2);
+  background:rgba(255,255,255,.4);backdrop-filter:blur(8px);
+  flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px;}
+#hdr-serie{font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.14em;color:var(--texte-or);opacity:.8;}
+#hdr-nom{font-size:.95rem;font-weight:600;color:var(--texte);text-align:center;}
+#hdr-mystere{font-size:.68rem;color:var(--texte-pale);letter-spacing:.05em;text-align:center;}
+
+/* Piste */
+#zone-piste{width:100%;padding:6px 14px 3px;flex-shrink:0;}
+#piste{width:100%;height:44px;
+  background:var(--verre2);backdrop-filter:blur(6px);
+  border:1px solid var(--glass-border);border-radius:22px;
+  box-shadow:var(--glass-shadow);
+  display:flex;align-items:center;padding:5px 12px;gap:4px;
+  overflow-x:auto;scrollbar-width:none;}
+#piste::-webkit-scrollbar{display:none;}
+.pp{flex-shrink:0;border-radius:50%;transition:all .25s;}
+.pp.vide{width:20px;height:20px;border:1.5px dashed rgba(180,155,100,.3);}
+.pp.faite{width:22px;height:22px;}
+.pp.active{width:26px;height:26px;animation:ppuls 1.4s ease-in-out infinite;}
+/* Notre Père : plus grosses */
+.pp.pp-np.vide{width:26px;height:26px;border:2px dashed rgba(184,145,58,.4);}
+.pp.pp-np.faite{width:28px;height:28px;}
+.pp.pp-np.active{width:33px;height:33px;}
+@keyframes ppuls{0%,100%{box-shadow:0 0 5px rgba(184,145,58,.35);}50%{box-shadow:0 0 14px rgba(184,145,58,.6);}}
+.p-ave{background:radial-gradient(circle at 35% 35%,#fff8ee,#d4b88a 70%,#a08050);}
+.p-notre{background:radial-gradient(circle at 35% 35%,#fff5c0,var(--or-vif) 65%,var(--or-sombre));}
+.p-sp{flex-shrink:0;width:1px;height:16px;
+  background:linear-gradient(to bottom,transparent,rgba(180,155,100,.3),transparent);margin:0 3px;}
+#dots{display:flex;gap:6px;justify-content:center;padding:2px 0 2px;}
+.dot{width:7px;height:7px;border-radius:50%;border:1.5px solid rgba(180,155,100,.35);transition:all .35s;}
+.dot.faite{background:var(--or-vif);border-color:var(--or);}
+.dot.active{border-color:var(--or);box-shadow:0 0 5px rgba(184,145,58,.4);}
+
+/* Zone principale */
+#main{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;overflow:hidden;min-height:0;}
+
+/* ── Phase prière texte ── */
+#ph-priere{width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:14px 20px;gap:14px;}
+#pr-nom{font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:.08em;color:var(--texte-or);text-align:center;}
+#pr-texte{font-style:italic;font-size:.92rem;line-height:1.8;color:var(--texte);text-align:center;
+  overflow-y:auto;scrollbar-width:none;flex:1;padding:0 6px;max-height:100%;
+  mask-image:linear-gradient(to bottom,black 80%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom,black 80%,transparent 100%);}
+#pr-texte::-webkit-scrollbar{display:none;}
+.btn-or{padding:11px 28px;
+  background:var(--verre);backdrop-filter:blur(8px);
+  border:1.5px solid var(--glass-border);
+  border-radius:24px;color:var(--texte-or);
+  font-family:'Cormorant Garamond',serif;
+  box-shadow:var(--glass-shadow),var(--glass-inner);
+  font-size:.9rem;letter-spacing:.08em;cursor:pointer;transition:all .18s;flex-shrink:0;}
+.btn-or:active{transform:scale(.97);box-shadow:0 2px 6px var(--ombre-med);}
+
+/* ════════════════════════════════
+   PUZZLE TAQUIN (pendant Ave)
+════════════════════════════════ */
+#ph-ave{width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;padding:8px 16px 10px;gap:6px;overflow:hidden;}
+#ave-haut{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;width:100%;}
+#ave-num{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.12em;color:var(--texte-or);opacity:.75;}
+#ave-texte{font-style:italic;font-size:.82rem;line-height:1.55;color:var(--texte);
+  text-align:center;width:100%;
+  overflow:hidden;
+  mask-image:linear-gradient(to bottom,black 65%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom,black 65%,transparent 100%);}
+#ave-bas{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:8px;min-height:0;width:100%;}
+#taquin-label{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.1em;
+  color:var(--texte-pale);}
+#taquin-wrap{position:relative;
+  border:1.5px solid var(--glass-border);
+  border-radius:16px;
+  background:var(--verre2);backdrop-filter:blur(10px);
+  box-shadow:var(--glass-shadow),var(--glass-inner);
+  overflow:visible;touch-action:none;flex-shrink:0;}
+#taquin-sortie{position:absolute;right:-20px;top:50%;transform:translateY(-50%);
+  width:20px;height:44px;display:flex;align-items:center;justify-content:center;
+  color:var(--or);font-size:.75rem;opacity:.6;pointer-events:none;}
+.tuile{position:absolute;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:left .16s ease,top .16s ease;user-select:none;touch-action:none;}
+.tuile-bloc{
+  border:1.5px solid var(--glass-border);
+  box-shadow:0 2px 8px rgba(160,140,110,.15),inset 0 1px 2px rgba(255,255,255,.7);}
+.tuile-bloc.sel-tq{
+  outline:2px solid var(--or-vif);
+  box-shadow:0 0 12px rgba(184,145,58,.4),inset 0 1px 2px rgba(255,255,255,.7);}
+.tuile-perle{
+  border:2px solid rgba(184,145,58,.6);z-index:10;
+  box-shadow:0 4px 14px rgba(184,145,58,.35),inset 0 1px 2px rgba(255,255,255,.6);
+  background:radial-gradient(circle at 35% 35%,#fffadc,#d4aa50 65%,#8a6518);
+  font-size:1.1rem;}
+#taquin-msg{font-size:.75rem;font-style:italic;color:var(--texte-or);text-align:center;min-height:1.1em;}
+
+/* ════════════════════════════════
+   PUZZLE MATCH-4 (inter-dizaines)
+════════════════════════════════ */
+#ph-puzzle{width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;padding:8px 16px 10px;gap:7px;overflow:hidden;}
+#puz-mystere{font-family:'Cinzel',serif;font-size:.78rem;color:var(--texte-or);
+  letter-spacing:.06em;text-align:center;flex-shrink:0;}
+#puz-fruit{font-style:italic;font-size:.72rem;color:var(--texte-pale);text-align:center;flex-shrink:0;}
+#puz-consigne{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.09em;
+  color:var(--texte-pale);text-align:center;flex-shrink:0;}
+#match-wrap{flex:1;width:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;min-height:0;}
+#match-grid{display:grid;gap:4px;
+  background:var(--verre2);backdrop-filter:blur(8px);
+  border:1.5px solid var(--glass-border);border-radius:16px;
+  padding:8px;
+  box-shadow:var(--glass-shadow),var(--glass-inner);}
+.mbloc{border-radius:10px;cursor:pointer;transition:transform .14s,box-shadow .14s;
+  border:1.5px solid rgba(255,255,255,.65);
+  box-shadow:0 2px 6px rgba(160,140,110,.12),inset 0 1px 2px rgba(255,255,255,.6);
+  user-select:none;touch-action:manipulation;}
+.mbloc:active{transform:scale(.92);}
+.mbloc.sel{outline:2.5px solid var(--or-vif);transform:scale(1.08);
+  box-shadow:0 4px 14px rgba(184,145,58,.35);}
+.mbloc.boom{animation:boom .3s ease forwards;}
+@keyframes boom{to{opacity:0;transform:scale(.25);}}
+
+/* Perles libérées */
+#perles-row{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;
+  min-height:28px;align-items:center;flex-shrink:0;}
+.pg{width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 38% 35%,#fff8ee,#d4b88a 70%,#a08050);
+  border:1.5px solid rgba(184,145,58,.5);
+  box-shadow:0 2px 6px rgba(160,140,110,.2);
+  animation:pgA .4s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes pgA{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+#puz-msg{font-size:.76rem;font-style:italic;color:var(--texte-or);text-align:center;
+  min-height:1.1em;flex-shrink:0;}
+#btn-dizaine{padding:11px 26px;
+  background:var(--verre);backdrop-filter:blur(8px);
+  border:1.5px solid var(--glass-border);
+  border-radius:24px;color:var(--texte-or);
+  font-family:'Cormorant Garamond',serif;
+  box-shadow:var(--glass-shadow),var(--glass-inner);
+  font-size:.9rem;letter-spacing:.09em;cursor:pointer;transition:all .18s;
+  opacity:0;pointer-events:none;flex-shrink:0;}
+#btn-dizaine.vis{opacity:1;pointer-events:all;}
+#btn-dizaine:active{transform:scale(.97);}
+
+/* Bouton passer (bas d'écran) */
+#btn-skip{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+  padding:7px 20px;
+  background:rgba(255,255,255,.45);backdrop-filter:blur(8px);
+  border:1px solid rgba(180,160,130,.3);border-radius:18px;
+  color:var(--texte-pale);font-family:'Cormorant Garamond',serif;
+  font-size:.72rem;letter-spacing:.08em;cursor:pointer;
+  transition:all .18s;z-index:5;white-space:nowrap;}
+#btn-skip:active{background:rgba(255,255,255,.7);transform:translateX(-50%) scale(.96);}
+
+/* Indicateur dizaine */
+#dizaine-label{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
+  color:var(--texte-pale);text-align:center;padding:0 0 1px;opacity:.7;
+  transition:opacity .3s;}
+
+/* Bouton pause permanent */
+#btn-pause{position:absolute;top:8px;right:12px;
+  width:32px;height:32px;border-radius:50%;
+  background:var(--verre);backdrop-filter:blur(8px);
+  border:1.5px solid var(--glass-border);
+  box-shadow:var(--glass-shadow);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:.9rem;color:var(--texte-pale);
+  transition:all .18s;z-index:10;}
+#btn-pause:active{transform:scale(.92);}
+
+/* Menu pause (overlay) */
+#menu-pause{position:fixed;inset:0;
+  background:rgba(200,190,175,.65);backdrop-filter:blur(14px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;gap:12px;z-index:50;
+  opacity:0;pointer-events:none;transition:opacity .3s;}
+#menu-pause.ouvert{opacity:1;pointer-events:all;}
+#pause-titre{font-family:'Cinzel',serif;font-size:1rem;color:var(--texte-or);
+  letter-spacing:.1em;margin-bottom:4px;}
+.btn-pause-action{padding:12px 24px;width:100%;max-width:280px;
+  background:rgba(255,255,255,.65);backdrop-filter:blur(8px);
+  border:1.5px solid var(--glass-border);border-radius:22px;
+  color:var(--texte);font-family:'Cormorant Garamond',serif;
+  font-size:.9rem;letter-spacing:.07em;cursor:pointer;
+  box-shadow:var(--glass-shadow),var(--glass-inner);
+  transition:all .18s;text-align:center;}
+.btn-pause-action.accent{color:var(--texte-or);border-color:rgba(184,145,58,.4);}
+.btn-pause-action:active{transform:scale(.97);}
+.pause-sep{width:80%;height:1px;background:rgba(180,160,130,.2);margin:4px 0;}
+#ecran-fin{justify-content:center;align-items:center;padding:24px 22px;gap:10px;text-align:center;overflow-y:auto;background:var(--fond3);}
+#fin-titre{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--texte-or);letter-spacing:.12em;flex-shrink:0;}
+#fin-sous{font-style:italic;font-size:.85rem;color:var(--texte-pale);flex-shrink:0;}
+.btn-fin{padding:11px 22px;
+  background:var(--verre);backdrop-filter:blur(8px);
+  border:1.5px solid var(--glass-border);
+  border-radius:22px;color:var(--texte);
+  box-shadow:var(--glass-shadow),var(--glass-inner);
+  font-family:'Cormorant Garamond',serif;
+  font-size:.85rem;letter-spacing:.07em;cursor:pointer;transition:all .18s;width:100%;max-width:300px;}
+.btn-fin.accent{border-color:rgba(184,145,58,.5);color:var(--texte-or);}
+.btn-fin:active{transform:scale(.97);}
+
+/* ══ MODAL ══ */
+#modal,#modal-ajout{position:fixed;inset:0;
+  background:rgba(200,190,175,.6);backdrop-filter:blur(12px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:18px;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s;}
+#modal.ouvert,#modal-ajout.ouvert{opacity:1;pointer-events:all;}
+.modal-inner{width:100%;max-width:440px;
+  background:rgba(255,255,255,.72);backdrop-filter:blur(16px);
+  border:1.5px solid var(--glass-border);border-radius:20px;
+  box-shadow:0 8px 40px rgba(160,140,110,.2),inset 0 1px 3px rgba(255,255,255,.9);
+  padding:20px 18px;display:flex;flex-direction:column;gap:12px;max-height:85vh;}
+#modal-titre{font-family:'Cinzel',serif;font-size:.82rem;color:var(--texte-or);
+  letter-spacing:.08em;text-align:center;flex-shrink:0;}
+#modal-corps{font-style:italic;font-size:.87rem;line-height:1.8;
+  color:var(--texte);overflow-y:auto;flex:1;white-space:pre-wrap;}
+.modal-fermer{padding:8px 22px;
+  background:var(--verre);
+  border:1.5px solid var(--glass-border);border-radius:18px;
+  color:var(--texte-pale);font-family:'Cormorant Garamond',serif;
+  font-size:.82rem;cursor:pointer;align-self:center;flex-shrink:0;
+  box-shadow:var(--glass-shadow);}
+.modal-fermer:active{transform:scale(.97);}
+/* Ajout */
+.ajout-label{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.1em;color:var(--texte-or);}
+.ajout-input{width:100%;background:rgba(255,255,255,.6);
+  border:1px solid rgba(180,160,130,.3);
+  border-radius:10px;color:var(--texte);font-family:'Cormorant Garamond',serif;
+  font-size:.88rem;padding:8px 10px;outline:none;resize:none;}
+.ajout-btns{display:flex;gap:8px;justify-content:flex-end;}
+.btn-ajout{padding:7px 16px;background:var(--verre);
+  border:1.5px solid var(--glass-border);
+  border-radius:16px;color:var(--texte-pale);
+  font-family:'Cormorant Garamond',serif;font-size:.82rem;cursor:pointer;
+  box-shadow:var(--glass-shadow);}
+.btn-ajout.ok{color:var(--texte-or);border-color:rgba(184,145,58,.4);}
+</style>
+</head>
+<body>
+
+<!-- ══ MENU ══ -->
+<div id="ecran-menu" class="ecran actif">
+  <div class="menu-titre">Le Chapelet</div>
+  <div class="menu-sous">Choisissez vos mystères</div>
+  <div class="grille-m">
+    <div class="btn-m" data-s="joyeux"    onclick="choisir('joyeux')"><div class="ic">🌸</div><div class="nm">Mystères<br>Joyeux</div><div class="fr">Lundi · Samedi</div></div>
+    <div class="btn-m" data-s="lumineux"  onclick="choisir('lumineux')"><div class="ic">✨</div><div class="nm">Mystères<br>Lumineux</div><div class="fr">Jeudi</div></div>
+    <div class="btn-m" data-s="douloureux" onclick="choisir('douloureux')"><div class="ic">🕊️</div><div class="nm">Mystères<br>Douloureux</div><div class="fr">Mardi · Vendredi</div></div>
+    <div class="btn-m" data-s="glorieux"  onclick="choisir('glorieux')"><div class="ic">👑</div><div class="nm">Mystères<br>Glorieux</div><div class="fr">Mercredi · Dimanche</div></div>
+  </div>
+</div>
+
+<!-- ══ JEU ══ -->
+<div id="ecran-jeu" class="ecran">
+  <div id="hdr" style="position:relative;">
+    <div id="hdr-serie"></div>
+    <div id="hdr-nom"></div>
+    <div id="hdr-mystere"></div>
+    <button id="btn-pause" onclick="ouvrirPause()" title="Pause">⏸</button>
+  </div>
+  <div id="zone-piste">
+    <div id="piste"></div>
+    <div id="dots"></div>
+    <div id="dizaine-label"></div>
+  </div>
+  <div id="main">
+
+    <!-- Prière simple -->
+    <div id="ph-priere" style="display:none;">
+      <div id="pr-nom"></div>
+      <div id="pr-texte"></div>
+      <button id="btn-suite" class="btn-or">Continuer ✦</button>
+    </div>
+
+    <!-- Ave + taquin -->
+    <div id="ph-ave" style="display:none;">
+      <div id="ave-haut">
+        <div id="ave-num"></div>
+        <div id="ave-texte"></div>
+      </div>
+      <div id="ave-bas">
+        <div id="taquin-label">LIBÉREZ LA PERLE POUR RÉCITER CET AVE</div>
+        <div id="taquin-wrap">
+          <div id="taquin-sortie">▶</div>
+        </div>
+        <div id="taquin-msg"></div>
+      </div>
+    </div>
+
+    <!-- Puzzle match inter-dizaines -->
+    <div id="ph-puzzle" style="display:none;">
+      <div id="puz-mystere"></div>
+      <div id="puz-fruit"></div>
+      <div id="puz-consigne">ALIGNEZ 4 BLOCS DE MÊME COULEUR · 1 LIGNE = 1 PERLE</div>
+      <div id="match-wrap">
+        <div id="match-grid"></div>
+        <div id="perles-row"></div>
+      </div>
+      <div id="puz-msg"></div>
+      <button id="btn-dizaine" onclick="lancerDizaine()">Prier ce mystère →</button>
+    </div>
+
+  </div><!-- fin #main -->
+  <button id="btn-skip" onclick="skipJeu()">Passer ›</button>
+</div><!-- fin #ecran-jeu -->
+<div id="ecran-fin" class="ecran">
+  <div id="fin-titre">Amen ✦</div>
+  <div id="fin-sous">Le chapelet est terminé.</div>
+  <button class="btn-fin accent" onclick="ouvrirModal('dame3x')">Ô Dame de tous les Peuples ×3</button>
+  <button class="btn-fin" onclick="ouvrirModal('michel')">Prière à Saint-Michel</button>
+  <button class="btn-fin" onclick="ouvrirModal('ange')">Prière de l'Ange de Fatima</button>
+  <button class="btn-fin" onclick="ouvrirModal('faustine')">Amour Miséricordieux (Faustine)</button>
+  <button class="btn-fin" onclick="ouvrirModal('eucharistie')">Prière en l'honneur de l'Eucharistie</button>
+  <button class="btn-fin" onclick="ouvrirModal('consecration')">Consécration à Marie-Paule</button>
+  <button class="btn-fin" onclick="reinit()" style="opacity:.5;margin-top:4px;">Nouveau chapelet</button>
+</div>
+
+<!-- ══ MENU PAUSE ══ -->
+<div id="menu-pause">
+  <div class="pause-titre" style="font-family:'Cinzel',serif;font-size:1rem;color:var(--texte-or);letter-spacing:.1em;margin-bottom:4px;">Pause</div>
+  <button class="btn-pause-action" onclick="fermerPause()">▶ Reprendre</button>
+  <div class="pause-sep"></div>
+  <button class="btn-pause-action accent" onclick="ouvrirModal('dame3x');fermerPause()">Ô Dame de tous les Peuples ×3</button>
+  <button class="btn-pause-action" onclick="ouvrirModal('michel');fermerPause()">Prière à Saint-Michel</button>
+  <button class="btn-pause-action" onclick="ouvrirModal('ange');fermerPause()">Prière de l'Ange de Fatima</button>
+  <button class="btn-pause-action" onclick="ouvrirModal('faustine');fermerPause()">Amour Miséricordieux</button>
+  <button class="btn-pause-action" onclick="ouvrirModal('eucharistie');fermerPause()">Prière — Eucharistie</button>
+  <button class="btn-pause-action" onclick="ouvrirModal('consecration');fermerPause()">Consécration à Marie-Paule</button>
+  <div class="pause-sep"></div>
+  <button class="btn-pause-action" onclick="revenirAuDepart()">↩ Recommencer depuis le début</button>
+  <button class="btn-pause-action" onclick="reinit()">☰ Choisir d'autres mystères</button>
+</div>
+
+<!-- ══ MODAL ══ -->
+<div id="modal">
+  <div class="modal-inner">
+    <div id="modal-titre"></div>
+    <div id="modal-corps"></div>
+    <button class="modal-fermer" onclick="fermerModal()">Fermer</button>
+  </div>
+</div>
+
+<!-- ══ MODAL AJOUT ══ -->
+<div id="modal-ajout">
+  <div class="modal-inner">
+    <div id="modal-titre2" style="font-family:'Cinzel',serif;font-size:.82rem;color:var(--or);text-align:center;letter-spacing:.08em;flex-shrink:0;">AJOUTER UNE PRIÈRE</div>
+    <div class="ajout-label">TITRE</div>
+    <input type="text" class="ajout-input" id="ajout-titre" style="height:36px;" placeholder="ex. Prière de confiance…">
+    <div class="ajout-label">TEXTE</div>
+    <textarea class="ajout-input" id="ajout-corps" style="height:110px;" placeholder="Entrez le texte ici…"></textarea>
+    <div class="ajout-btns">
+      <button class="btn-ajout" onclick="fermerAjout()">Annuler</button>
+      <button class="btn-ajout ok" onclick="sauvegarderAjout()">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  DONNÉES
+// ══════════════════════════════════════════════════
+const PR = {
+  amour:{nom:"Je t'aime, ô mon Dieu",texte:`Je t'aime, ô mon Dieu,
+Père et Mère qui m'avez créé-e,
+Fils et Fille qui m'avez sauvé-e,
+Esprit de Feu qui demeures en moi.
+J'accueille avec joie le don du Royaume
+et j'entends votre pressant appel
+à vivre une vie d'amour qui me sanctifie,
+me divinise et me conduise au Monde divin.`},
+  notre:{nom:"Notre Père",texte:`Notre Père, qui es aux cieux,
+que Ton nom soit sanctifié,
+que Ton règne vienne,
+que Ta volonté soit faite sur la terre comme au ciel.
+Donne-nous aujourd'hui notre pain de ce jour.
+Pardonne-nous nos offenses,
+comme nous pardonnons aussi à ceux qui nous ont offensés,
+et ne nous soumets pas à la tentation,
+mais délivre-nous du Mal.`},
+  ave:{nom:"Je te salue, Marie",texte:`Je te salue, Marie, pleine de grâce,
+le Seigneur est avec Toi.
+Tu es bénie entre toutes les femmes
+et Jésus, le fruit de ton Amour, est béni.
+Divine Marie, notre Mère,
+exauce nos prières et prends-nous par la main
+sur le chemin qui conduit à l'Amour infini.`},
+  gloire:{nom:"Gloire et Louange",texte:`Gloire et Louange à Toi,
+Dieu qui nous aimes et nous veux dans ton Cœur.`},
+  fatima:{nom:"Ô mon Jésus",texte:`Ô mon Jésus, pardonne-nous nos péchés,
+préserve-nous du feu de l'enfer
+et conduis au Ciel toutes les âmes,
+aide surtout celles
+qui ont le plus besoin de ta miséricorde.`},
+  dame:{nom:"Prière de la Dame de tous les Peuples",texte:`Seigneur Jésus-Christ, Fils du Père,
+envoie à présent ton Esprit sur la terre.
+Fais habiter l'Esprit Saint
+dans les cœurs de tous les peuples,
+afin qu'ils soient préservés
+de la corruption, des calamités et de la guerre.
+Que la Dame de tous les Peuples,
+qui fut un jour Marie, soit notre Avocate. Amen.`},
+  dame3x:{nom:"Ô Dame de tous les Peuples",texte:`Ô Dame de tous les Peuples, nous te prions.
+Ô Dame de tous les Peuples, nous te prions.
+Ô Dame de tous les Peuples, nous te prions.`},
+  michel:{nom:"Prière à Saint-Michel Archange",texte:`Saint-Michel Archange,
+défends-nous dans le combat
+et sois notre protecteur
+contre la méchanceté et les embûches du démon.
+Que Dieu lui commande, nous t'en supplions ;
+et toi, Prince de la Milice céleste,
+par le pouvoir divin qui t'a été confié,
+précipite au fond des enfers
+Satan et les autres esprits mauvais
+qui parcourent le monde
+pour la perte des âmes. Amen.`},
+  ange:{nom:"Prière de l'Ange de Fatima",texte:`Ô Très Sainte Trinité, Père, Fils et Saint-Esprit,
+je vous adore profondément
+et vous offre les très précieux Corps, Sang,
+Âme et Divinité de Jésus-Christ,
+présent dans tous les tabernacles de la terre,
+en réparation des outrages, sacrilèges et indifférences
+par lesquels Il est offensé lui-même.
+Par les mérites infinis de son Sacré-Cœur
+et du Cœur Immaculé de Marie,
+je vous demande la conversion des pauvres pécheurs. Amen.`},
+  faustine:{nom:"Amour Miséricordieux (sœur Faustine)",texte:`Ô Sang et Eau,
+qui avez jailli du Cœur de Jésus
+comme source de miséricorde pour nous,
+j'ai confiance en Vous.
+Jésus, j'ai confiance en Toi.
+Jésus, j'ai confiance en Toi.
+Jésus, j'ai confiance en Toi.`},
+  eucharistie:{nom:"Prière en l'honneur de l'Eucharistie",texte:`Dieu-Père, Immaculée-Mère, Vous qui êtes à l'origine de tout ce qui existe en chacun des mondes que Vous avez créés, nous Vous rendons grâce pour l'Amour qui Vous lie l'Un à l'Autre et dont nous sommes les fruits divins dans la totalité de notre être.
+
+À chaque instant, nous vivons de ce même Amour, il nous enveloppe et nous soulève et fait naître en nous l'ultime aspiration de nous fondre un jour en Vous.
+
+Jésus-Christ, Toi qui es Dieu dans l'Homme et l'Homme en Dieu, Tu as saisi toutes les dimensions de la Création présentes en Toi, les irradiant complètement de ta Force incomparable, et Tu les as transformées en cette Eucharistie que nous vénérons aujourd'hui comme la Présence inaltérable de la Divinité parmi nous.
+
+Telle est ton offrande à l'humanité, pour la sanctification de chaque homme et de chaque femme appelés, dans la quiétude ou la détresse, à se nourrir de Toi pour Te faire naître et grandir en eux. Fais de nous des êtres conformes à Toi : convertis notre chair assujettie à la mort en ton Corps et ton Sang sacrés.
+
+Marie-Paule, Toi qui es, après Marie, l'Immaculée faite à nouveau Femme, et qui es désormais la Dame introduite au cœur de la Divinité, Tu es la réponse parfaite à l'appel du Christ à la perfection, Tu L'as suivi en toutes choses et Tu L'as pleinement écouté, jusqu'à faire en Toi ce qu'Il avait fait en Lui : devenir Eucharistie.
+
+Quand ton Amour T'a fait monter d'un monde, le Christ est descendu d'un autre afin de Te donner sa main divine et de T'entraîner avec Lui dans l'immense espace nouveau que Vous avez créé, pour y accueillir, l'une après l'autre, toutes les âmes de l'humanité.
+
+Que l'Esprit de Sainteté, de Lumière et de Vérité, qui est l'ultime Accomplissement de l'Unité que Vous formez, suscite en nous l'insatiable besoin de l'Eucharistie nouvelle en laquelle, un jour, nous serons tous intégralement renouvelés.
+
+Par la Puissance du Père et par la Fécondité de la Mère, par la Rédemption du Christ, Homme et Femme, et par l'ardente et pénétrante Action de l'Esprit, que soit soumise en nous la pesanteur humaine afin que resplendisse en nous la gloire divine. Amen.`},
+  consecration:{nom:"Consécration à Marie-Paule",texte:`Ô Marie-Paule, Dame de tous les Peuples, Mère du Royaume et Souveraine de la Terre, je tourne aujourd'hui mon cœur vers toi, car tu es l'Envoyée de Dieu pour notre temps, dans notre monde.
+
+Il T'a choisie entre toutes les femmes, Il T'a confié le sort de l'humanité terrestre et Il T'a donné tous les pouvoirs, Fille de Marie-la-Divine et Fleur des Fleurs dans le Jardin de Dieu.
+
+Dans l'intime conviction que par Toi s'accomplit une Œuvre grandiose et que Tu es l'Immaculée Co-Rédemptrice issue du Cœur de Dieu Rédempteur, je me consacre à Toi, je me livre à Toi dans la totalité de mon être, en toute liberté, sans rien retenir et sans rien réserver.
+
+Ô Marie-Paule, Fille de Dieu-Père et de l'Immaculée-Mère, Épouse de Jésus-Christ, dans le feu de l'Esprit, je sais que Tu ne fais qu'UNE avec la Divinité Totale qui régit toutes choses au Ciel et sur la Terre.
+
+C'est pourquoi je veux T'aimer, Te servir et Te faire régner dans le monde, afin qu'en toi les peuples viennent boire à la source du Renouveau, car le Royaume que Tu viens établir est le fruit de ton Amour en toutes ses dimensions. Je m'offre à Toi pour hâter l'avènement de ce Royaume, et pour y travailler de la manière dont Tu voudras bien m'utiliser.
+
+Que rien ne m'arrête et que je ne craigne rien, ni la malveillance des êtres humains ni les séductions des forces du mal.
+
+Que jamais je n'oublie que Tu seras toujours avec moi surtout s'il m'est offert un jour de Te faire le sacrifice de ma vie.
+
+Qu'à ton exemple je serve en tout temps Dieu d'abord et qu'ainsi je permette aux hommes, aux femmes et aux enfants, du présent comme de l'avenir, de se nourrir de ta Vie d'Amour et de la reproduire de l'aurore du Royaume jusqu'à la fin du monde.
+
+Amen.`}
+};
+
+const MYSTERES = {
+  joyeux:{nom:"Mystères Joyeux",emoji:"🌸",liste:[
+    {t:"l'Annonciation",f:"la pureté"},
+    {t:"la Visitation",f:"la charité"},
+    {t:"la Nativité",f:"l'esprit de pauvreté"},
+    {t:"la Présentation au temple",f:"l'esprit d'obéissance"},
+    {t:"le Recouvrement au temple",f:"la ferveur"}
+  ]},
+  lumineux:{nom:"Mystères Lumineux",emoji:"✨",liste:[
+    {t:"le Baptême du Christ",f:"l'ouverture à la grâce"},
+    {t:"les Noces de Cana",f:"l'obéissance à Dieu"},
+    {t:"l'Annonce du Royaume",f:"la conversion du cœur"},
+    {t:"la Transfiguration",f:"l'espérance"},
+    {t:"l'Institution de l'Eucharistie",f:"l'amour de l'Eucharistie"}
+  ]},
+  douloureux:{nom:"Mystères Douloureux",emoji:"🕊️",liste:[
+    {t:"l'Agonie",f:"la contrition"},
+    {t:"la Flagellation",f:"la mortification"},
+    {t:"le Couronnement d'épines",f:"l'humilité"},
+    {t:"le Portement de la croix",f:"la patience"},
+    {t:"le Crucifiement",f:"la conversion des pécheurs"}
+  ]},
+  glorieux:{nom:"Mystères Glorieux",emoji:"👑",liste:[
+    {t:"la Résurrection",f:"la foi en Dieu"},
+    {t:"l'Ascension",f:"le désir du Ciel"},
+    {t:"la Pentecôte",f:"les dons du Saint-Esprit"},
+    {t:"l'Assomption",f:"la grâce d'une bonne mort"},
+    {t:"le Couronnement de Marie",f:"l'union à Marie"}
+  ]}
+};
+
+// ══════════════════════════════════════════════════
+//  ÉTAT GLOBAL
+// ══════════════════════════════════════════════════
+let serie=null, dizaine=0, aveIndex=0, pisteIdx=0;
+let phase='menu'; // menu|intro|puzzle|notre|ave|gloire|fatima|dame|fin
+let introIdx=0;
+let prierePersoTitre='', prierePersoTexte='';
+const SEQ_INTRO=['amour','notre','ave','ave','ave','gloire'];
+
+// ══════════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════════
+function showEcran(id){
+  document.querySelectorAll('.ecran').forEach(e=>e.classList.remove('actif'));
+  document.getElementById(id).classList.add('actif');
+}
+function showPhase(id){
+  ['ph-priere','ph-ave','ph-puzzle'].forEach(p=>{
+    const el=document.getElementById(p);
+    if(el) el.style.display=(p===id?'flex':'none');
+  });
+}
+
+// ══════════════════════════════════════════════════
+//  PISTE
+// ══════════════════════════════════════════════════
+function buildPiste(){
+  const p=document.getElementById('piste');
+  p.innerHTML=''; pisteIdx=0;
+  // intro : notre+3ave+gloire
+  [{t:'notre'},{t:'ave'},{t:'ave'},{t:'ave'},{t:'gloire'}]
+    .forEach((_,i)=>p.appendChild(mkPP(i<1?'notre':'ave','i'+i)));
+  for(let d=0;d<5;d++){
+    const s=document.createElement('div');s.className='p-sp';p.appendChild(s);
+    p.appendChild(mkPP('notre','d'+d+'n'));
+    for(let a=0;a<10;a++) p.appendChild(mkPP('ave','d'+d+'a'+a));
+    // gloire+fatima+dame = petites perles notre
+    for(let f=0;f<3;f++) p.appendChild(mkPP('notre','d'+d+'f'+f));
+  }
+}
+function mkPP(type,id){
+  const d=document.createElement('div');
+  d.className='pp vide'+(type==='notre'?' pp-np':'');
+  d.id='pp-'+id;
+  d.dataset.cls=type==='notre'?'p-notre':'p-ave';
+  return d;
+}
+function advPiste(){
+  const all=[...document.querySelectorAll('#piste .pp')];
+  if(pisteIdx>0){
+    const prev=all[pisteIdx-1];
+    const np=prev.classList.contains('pp-np')?' pp-np':'';
+    prev.className=`pp faite${np} ${prev.dataset.cls}`;
+  }
+  if(pisteIdx<all.length){
+    const cur=all[pisteIdx];
+    const np=cur.classList.contains('pp-np')?' pp-np':'';
+    cur.className=`pp active${np} ${cur.dataset.cls}`;
+    cur.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    pisteIdx++;
+  }
+}
+function buildDots(){
+  const d=document.getElementById('dots'); d.innerHTML='';
+  for(let i=0;i<5;i++){
+    const dot=document.createElement('div');dot.className='dot';dot.id='dot'+i;d.appendChild(dot);
+  }
+}
+function setDot(d,st){ const el=document.getElementById('dot'+d); if(el) el.className='dot '+st; }
+
+// ══════════════════════════════════════════════════
+//  DÉMARRAGE
+// ══════════════════════════════════════════════════
+function choisir(s){
+  serie=s; dizaine=0; introIdx=0; aveIndex=0;
+  buildPiste(); buildDots();
+  document.getElementById('hdr-serie').textContent=MYSTERES[s].emoji+'  '+MYSTERES[s].nom;
+  showEcran('ecran-jeu');
+  phase='intro'; jouerIntro();
+}
+
+// ══════════════════════════════════════════════════
+//  INTRO
+// ══════════════════════════════════════════════════
+function jouerIntro(){
+  majDizaineLabel();
+  if(introIdx>=SEQ_INTRO.length){ lancerPuzzle(0); return; }
+  const key=SEQ_INTRO[introIdx];
+  afficherPriere(PR[key].nom, PR[key].texte, ()=>{
+    advPiste(); introIdx++; jouerIntro();
+  });
+}
+
+// ══════════════════════════════════════════════════
+//  PRIÈRE TEXTE SIMPLE
+// ══════════════════════════════════════════════════
+let _cb=null;
+function afficherPriere(nom,texte,cb){
+  showPhase('ph-priere');
+  document.getElementById('pr-nom').textContent=nom;
+  document.getElementById('hdr-nom').textContent=nom;
+  const pt=document.getElementById('pr-texte');
+  pt.style.opacity='0';
+  setTimeout(()=>{ pt.textContent=texte; pt.style.opacity='1'; pt.style.transition='opacity .3s'; pt.scrollTop=0; },100);
+  _cb=cb;
+}
+document.getElementById('btn-suite').onclick=()=>{ if(_cb){const c=_cb;_cb=null;c();} };
+
+// ══════════════════════════════════════════════════
+//  PUZZLE MATCH-3 INTER-DIZAINES
+//  Règle : 1 alignement de 3+ = 1 perle libérée
+// ══════════════════════════════════════════════════
+const COLS_M=6, ROWS_M=5, NC=4;
+// Couleurs verre givré pastel — teintes douces
+const COUL=[
+  'rgba(180,210,225,0.75)', // bleu ciel givré
+  'rgba(225,195,195,0.75)', // rose poudré
+  'rgba(195,220,195,0.75)', // vert sauge
+  'rgba(235,220,180,0.75)', // ambre pâle
+];
+let mGrid=[], mSel=null, perlesLib=0, puzzleOK=false, mBlocSz=44;
+
+function lancerPuzzle(d){
+  dizaine=d; phase='puzzle'; perlesLib=0; puzzleOK=false; mSel=null;
+  showPhase('ph-puzzle');
+  const myst=MYSTERES[serie].liste[d];
+  document.getElementById('puz-mystere').textContent=`${d+1}. ${myst.t}`;
+  document.getElementById('puz-fruit').textContent=`Fruit : ${myst.f}`;
+  document.getElementById('hdr-nom').textContent=myst.t;
+  document.getElementById('hdr-mystere').textContent='Libérez 10 perles · 4 blocs alignés = 1 perle';
+  document.getElementById('puz-msg').textContent='';
+  document.getElementById('perles-row').innerHTML='';
+  document.getElementById('btn-dizaine').classList.remove('vis');
+  setDot(d,'active');
+  majDizaineLabel();
+  if(mGrid.length===0) genGrille();
+  rendreMatch();
+}
+function genGrille(){
+  mGrid=[];
+  for(let r=0;r<ROWS_M;r++){
+    mGrid.push([]);
+    for(let c=0;c<COLS_M;c++) mGrid[r].push(Math.floor(Math.random()*NC));
+  }
+}
+function rendreMatch(){
+  const g=document.getElementById('match-grid');
+  const w=Math.min((document.getElementById('match-wrap').clientWidth||300)-20,360);
+  mBlocSz=Math.floor(w/COLS_M);
+  g.style.gridTemplateColumns=`repeat(${COLS_M},${mBlocSz}px)`;
+  g.innerHTML='';
+  for(let r=0;r<ROWS_M;r++){
+    for(let c=0;c<COLS_M;c++){
+      const v=mGrid[r][c];
+      const el=document.createElement('div');
+      el.className='mbloc';
+      el.style.width=(mBlocSz-4)+'px'; el.style.height=(mBlocSz-4)+'px';
+      el.style.background=COUL[v];
+      el.dataset.r=r; el.dataset.c=c; el.dataset.v=v;
+      if(mSel&&+mSel.r===r&&+mSel.c===c) el.classList.add('sel');
+      el.onclick=()=>clickMatch(r,c);
+      g.appendChild(el);
+    }
+  }
+}
+function clickMatch(r,c){
+  if(puzzleOK) return;
+  if(!mSel){ mSel={r,c}; rendreMatch(); return; }
+  if(mSel.r===r&&mSel.c===c){ mSel=null; rendreMatch(); return; }
+  // Échange si adjacent
+  const dr=Math.abs(r-mSel.r), dc=Math.abs(c-mSel.c);
+  if(dr+dc!==1){ mSel={r,c}; rendreMatch(); return; }
+  const v1=mGrid[mSel.r][mSel.c], v2=mGrid[r][c];
+  mGrid[mSel.r][mSel.c]=v2; mGrid[r][c]=v1;
+  mSel=null;
+  const hits=trouverAlignements();
+  if(hits.length>0) effacer(hits);
+  else rendreMatch();
+}
+function trouverAlignements(){
+  // Retourne des groupes : chaque groupe = un ensemble de cases alignées de 4+
+  // 1 groupe = 1 perle
+  const groupes=[];
+  const dejaPris=new Set();
+  // Horizontal : chercher séquences de 4+ de même couleur
+  for(let r=0;r<ROWS_M;r++){
+    let c=0;
+    while(c<COLS_M){
+      const v=mGrid[r][c];
+      if(v<0){c++;continue;}
+      let len=1;
+      while(c+len<COLS_M&&mGrid[r][c+len]===v) len++;
+      if(len>=4){
+        const groupe=[];
+        for(let k=0;k<len;k++){
+          const key=`${r},${c+k}`;
+          if(!dejaPris.has(key)){ groupe.push({r,c:c+k}); dejaPris.add(key); }
+        }
+        if(groupe.length>0) groupes.push(groupe);
+      }
+      c+=len;
+    }
+  }
+  // Vertical
+  for(let c=0;c<COLS_M;c++){
+    let r=0;
+    while(r<ROWS_M){
+      const v=mGrid[r][c];
+      if(v<0){r++;continue;}
+      let len=1;
+      while(r+len<ROWS_M&&mGrid[r+len][c]===v) len++;
+      if(len>=4){
+        const groupe=[];
+        for(let k=0;k<len;k++){
+          const key=`${r+k},${c}`;
+          if(!dejaPris.has(key)){ groupe.push({r:r+k,c}); dejaPris.add(key); }
+        }
+        if(groupe.length>0) groupes.push(groupe);
+      }
+      r+=len;
+    }
+  }
+  return groupes; // tableau de groupes
+}
+function effacer(groupes){
+  // groupes est un tableau de tableaux de {r,c}
+  // 1 groupe = 1 perle
+  const nbPerles=Math.min(groupes.length, 10-perlesLib);
+  const toutesLesCases=groupes.flat();
+
+  // Effacer les blocs
+  toutesLesCases.forEach(({r,c})=>{ mGrid[r][c]=-1; });
+  // Gravité
+  for(let c=0;c<COLS_M;c++){
+    const col=[];
+    for(let r=0;r<ROWS_M;r++) if(mGrid[r][c]>=0) col.push(mGrid[r][c]);
+    while(col.length<ROWS_M) col.unshift(Math.floor(Math.random()*NC));
+    for(let r=0;r<ROWS_M;r++) mGrid[r][c]=col[r];
+  }
+  // Ajouter perles
+  for(let i=0;i<nbPerles;i++){
+    perlesLib++;
+    setTimeout(()=>addPerleRow(), i*100);
+  }
+  setTimeout(()=>{
+    rendreMatch();
+    const next=trouverAlignements();
+    if(next.length>0) setTimeout(()=>effacer(next),300);
+    if(perlesLib>=10&&!puzzleOK){
+      puzzleOK=true;
+      document.getElementById('puz-msg').textContent='✦ Les 10 perles sont libérées ✦';
+      document.getElementById('btn-dizaine').classList.add('vis');
+    }
+  },340);
+}
+function addPerleRow(){
+  const row=document.getElementById('perles-row');
+  const d=document.createElement('div'); d.className='pg';
+  d.style.animationDelay=(Math.random()*.08)+'s';
+  row.appendChild(d);
+}
+
+// ══════════════════════════════════════════════════
+//  DIZAINE — Notre Père
+// ══════════════════════════════════════════════════
+function lancerDizaine(){
+  phase='notre'; aveIndex=0;
+  const myst=MYSTERES[serie].liste[dizaine];
+  document.getElementById('hdr-mystere').textContent=`${dizaine+1}. ${myst.t} — Fruit : ${myst.f}`;
+  majDizaineLabel();
+  afficherPriere(PR.notre.nom, PR.notre.texte, ()=>{
+    advPiste(); phase='ave'; lancerAve(0);
+  });
+}
+
+// ── Indicateur dizaine ──
+function majDizaineLabel(){
+  const ordinal=['1re','2e','3e','4e','5e'];
+  const el=document.getElementById('dizaine-label');
+  if(!el) return;
+  if(phase==='intro'){ el.textContent='Introduction'; }
+  else { el.textContent=ordinal[dizaine]+' dizaine'; }
+}
+
+// ── Bouton Passer ──
+function skipJeu(){
+  if(phase==='puzzle'){
+    // Sauter le puzzle → aller directement à la dizaine
+    lancerDizaine();
+  } else if(phase==='ave'){
+    // Sauter cet Ave
+    if(TQ.resolu) return;
+    TQ.resolu=true;
+    document.getElementById('taquin-msg').textContent='✦ Ave récité ✦';
+    advPiste();
+    setTimeout(()=>{
+      const next=aveIndex+1;
+      if(next>=10){
+        afficherPriere(PR.gloire.nom,PR.gloire.texte,()=>{
+          advPiste();
+          afficherPriere(PR.fatima.nom,PR.fatima.texte,()=>{
+            advPiste();
+            afficherPriere(PR.dame.nom,PR.dame.texte,()=>{
+              advPiste(); finirDizaine();
+            });
+          });
+        });
+      } else { lancerAve(next); }
+    },400);
+  } else if(phase==='notre'||phase==='gloire'||phase==='fatima'||phase==='dame'){
+    // Sauter la prière en cours
+    if(_cb){const c=_cb;_cb=null;c();}
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  AVE MARIA + TAQUIN
+//  Une résolution taquin = un Ave récité
+// ══════════════════════════════════════════════════
+
+// Taquin state
+let TQ={grille:[], pos:{}, vide:{r:0,c:0}, rows:3, cols:3, sz:60, perleId:null, resolu:false};
+let tqSel=null; // id de la tuile sélectionnée (mode clic-clic)
+
+// Couleurs blocs taquin — verre givré pastel
+const TQ_COULEURS=[
+  'rgba(185,210,230,0.7)','rgba(230,200,200,0.7)','rgba(200,225,200,0.7)',
+  'rgba(240,225,185,0.7)','rgba(215,200,235,0.7)','rgba(200,230,225,0.7)',
+  'rgba(235,215,200,0.7)','rgba(225,230,200,0.7)',
+];
+
+function lancerAve(idx){
+  aveIndex=idx;
+  showPhase('ph-ave');
+  document.getElementById('hdr-nom').textContent='Je te salue, Marie';
+  document.getElementById('ave-num').textContent=`Je te salue, Marie — ${idx+1} / 10`;
+  const at=document.getElementById('ave-texte');
+  // Variation cyclique : repère visuel entre chaque Ave
+  const COULEURS_AVE=['#4a3a28','#5c4a34','#3a302a','#6a5240','#504030'];
+  const STYLES_AVE=[
+    {paddingLeft:'0',paddingRight:'18px',textAlign:'left'},
+    {paddingLeft:'9px',paddingRight:'9px',textAlign:'center'},
+    {paddingLeft:'18px',paddingRight:'0',textAlign:'right'},
+    {paddingLeft:'4px',paddingRight:'14px',textAlign:'left'},
+    {paddingLeft:'14px',paddingRight:'4px',textAlign:'right'},
+  ];
+  const s=STYLES_AVE[idx%STYLES_AVE.length];
+  at.style.opacity='0';
+  setTimeout(()=>{
+    at.textContent=PR.ave.texte;
+    at.style.color=COULEURS_AVE[idx%COULEURS_AVE.length];
+    Object.assign(at.style, s);
+    at.style.opacity='1'; at.style.transition='opacity .25s';
+  },80);
+  document.getElementById('taquin-msg').textContent='';
+  initTaquin();
+}
+
+function initTaquin(){
+  TQ.rows=3; TQ.cols=3; TQ.resolu=false; tqSel=null;
+  const wrap=document.getElementById('taquin-wrap');
+  // Calculer taille disponible
+  const aveBas=document.getElementById('ave-bas');
+  const avail=Math.min(aveBas.clientHeight-60||160, aveBas.clientWidth-40||200);
+  TQ.sz=Math.floor(Math.min(avail/TQ.rows, (document.getElementById('ecran-jeu').clientWidth-60)/TQ.cols, 72));
+
+  wrap.style.width=(TQ.cols*TQ.sz)+'px';
+  wrap.style.height=(TQ.rows*TQ.sz)+'px';
+
+  // Sortie au milieu droit
+  const sortie=document.getElementById('taquin-sortie');
+  const rangSortie=Math.floor(TQ.rows/2);
+  sortie.style.top=(rangSortie*TQ.sz+TQ.sz/2-22)+'px';
+
+  // Construire grille : ids 0..rows*cols-1, -1=vide
+  TQ.grille=[]; TQ.pos={};
+  let id=0;
+  for(let r=0;r<TQ.rows;r++){
+    TQ.grille.push([]);
+    for(let c=0;c<TQ.cols;c++){
+      TQ.grille[r].push(id); TQ.pos[id]={r,c}; id++;
+    }
+  }
+  TQ.perleId=TQ.rows*TQ.cols; // id spécial
+  // Cases interdites pour la perle (sortie et adjacentes)
+  const interdites=new Set([
+    `${rangSortie},${TQ.cols-1}`,
+    `${rangSortie},${TQ.cols-2}`,
+    `${rangSortie-1},${TQ.cols-1}`,
+    `${rangSortie+1},${TQ.cols-1}`,
+    '0,0',
+  ]);
+  TQ.vide={r:0,c:0}; TQ.grille[0][0]=-1;
+  // Trouver position initiale valide
+  let rp=1, cp=0;
+  outer: for(let r=0;r<TQ.rows;r++) for(let c=0;c<TQ.cols;c++){
+    if(!interdites.has(`${r},${c}`)){ rp=r; cp=c; break outer; }
+  }
+  TQ.grille[rp][cp]=TQ.perleId; TQ.pos[TQ.perleId]={r:rp,c:cp};
+
+  melangerTaquin(20);
+  // Vérifier post-mélange : pas adjacente à la sortie
+  let essais=0;
+  while(essais<8){
+    const {r,c}=TQ.pos[TQ.perleId];
+    if(!interdites.has(`${r},${c}`)) break;
+    melangerTaquin(5); essais++;
+  }
+  rendreTaquin();
+}
+
+function melangerTaquin(n){
+  for(let i=0;i<n;i++){
+    const vois=voisinsVide();
+    const ch=vois[Math.floor(Math.random()*vois.length)];
+    swapTaquin(ch.r,ch.c,true);
+  }
+}
+function voisinsVide(){
+  const {r,c}=TQ.vide, v=[];
+  if(r>0) v.push({r:r-1,c});
+  if(r<TQ.rows-1) v.push({r:r+1,c});
+  if(c>0) v.push({r,c:c-1});
+  if(c<TQ.cols-1) v.push({r,c:c+1});
+  return v;
+}
+function swapTaquin(r,c,silent=false){
+  const id=TQ.grille[r][c];
+  TQ.grille[TQ.vide.r][TQ.vide.c]=id;
+  TQ.pos[id]={r:TQ.vide.r,c:TQ.vide.c};
+  TQ.grille[r][c]=-1;
+  TQ.vide={r,c};
+  if(!silent){
+    // Animer la tuile déplacée
+    const el=document.getElementById('tq-'+id);
+    if(el){
+      el.style.left=(TQ.pos[id].c*TQ.sz)+'px';
+      el.style.top=(TQ.pos[id].r*TQ.sz)+'px';
+    }
+    verifierSortie(id);
+  }
+}
+
+function rendreTaquin(){
+  const wrap=document.getElementById('taquin-wrap');
+  wrap.querySelectorAll('.tuile').forEach(t=>t.remove());
+  for(let r=0;r<TQ.rows;r++){
+    for(let c=0;c<TQ.cols;c++){
+      const id=TQ.grille[r][c];
+      if(id===-1) continue;
+      const el=document.createElement('div');
+      el.id='tq-'+id; el.dataset.id=id;
+      el.style.left=(c*TQ.sz+3)+'px'; el.style.top=(r*TQ.sz+3)+'px';
+      el.style.width=(TQ.sz-6)+'px'; el.style.height=(TQ.sz-6)+'px';
+      if(id===TQ.perleId){
+        el.className='tuile tuile-perle'; el.textContent='✦';
+      } else {
+        el.className='tuile tuile-bloc';
+        el.style.background=TQ_COULEURS[id%TQ_COULEURS.length];
+        el.style.backdropFilter='blur(6px)';
+        if(tqSel===id) el.classList.add('sel-tq');
+      }
+      // Touch : glisser la tuile
+      let tx0=0,ty0=0;
+      el.addEventListener('touchstart',e=>{
+        tx0=e.touches[0].clientX; ty0=e.touches[0].clientY;
+      },{passive:true});
+      el.addEventListener('touchend',e=>{
+        if(TQ.resolu) return;
+        const dx=e.changedTouches[0].clientX-tx0;
+        const dy=e.changedTouches[0].clientY-ty0;
+        const adx=Math.abs(dx),ady=Math.abs(dy);
+        if(adx<8&&ady<8){ clickTaquin(id); return; } // tap simple
+        // Glissement : déterminer direction
+        let dr=0,dc=0;
+        if(adx>ady) dc=dx>0?1:-1; else dr=dy>0?1:-1;
+        const {r:pr,c:pc}=TQ.pos[id];
+        const nr=pr+dr, nc=pc+dc;
+        if(nr>=0&&nr<TQ.rows&&nc>=0&&nc<TQ.cols&&TQ.grille[nr][nc]===-1){
+          tqSel=null; swapTaquin(pr,pc); rendreTaquin();
+        }
+      },{passive:true});
+      el.addEventListener('click',()=>clickTaquin(id));
+      wrap.appendChild(el);
+    }
+  }
+}
+
+function clickTaquin(id){
+  if(TQ.resolu) return;
+  const {r,c}=TQ.pos[id];
+  // Si case vide adjacente → déplacer directement
+  const dr=Math.abs(r-TQ.vide.r), dc=Math.abs(c-TQ.vide.c);
+  if(dr+dc===1){
+    tqSel=null; swapTaquin(r,c); rendreTaquin(); return;
+  }
+  // Sinon : sélectionner/désélectionner
+  if(tqSel===id){ tqSel=null; rendreTaquin(); return; }
+  if(tqSel!==null){
+    // Une autre tuile était sélectionnée : si c'est adjacent au vide, déplacer ça
+    const {r:sr,c:sc}=TQ.pos[tqSel];
+    const drs=Math.abs(sr-TQ.vide.r), dcs=Math.abs(sc-TQ.vide.c);
+    if(drs+dcs===1){ swapTaquin(sr,sc); tqSel=null; rendreTaquin(); return; }
+  }
+  tqSel=id; rendreTaquin();
+}
+
+function verifierSortie(id){
+  if(id!==TQ.perleId) return;
+  const {r,c}=TQ.pos[TQ.perleId];
+  const rangSortie=Math.floor(TQ.rows/2);
+  // La perle est à la dernière colonne ET au bon rang
+  if(c===TQ.cols-1&&r===rangSortie){
+    setTimeout(()=>aveSortie(),200);
+  }
+}
+
+function aveSortie(){
+  if(TQ.resolu) return;
+  TQ.resolu=true;
+  // Animer la perle qui sort
+  const el=document.getElementById('tq-'+TQ.perleId);
+  if(el){
+    el.style.transition='left .45s ease, opacity .45s';
+    el.style.left=(TQ.cols*TQ.sz+20)+'px';
+    el.style.opacity='0';
+  }
+  document.getElementById('taquin-msg').textContent='✦ Ave récité ✦';
+  advPiste();
+  setTimeout(()=>{
+    const next=aveIndex+1;
+    if(next>=10){
+      // Fin des Ave → Gloire
+      afficherPriere(PR.gloire.nom, PR.gloire.texte, ()=>{
+        advPiste();
+        afficherPriere(PR.fatima.nom, PR.fatima.texte, ()=>{
+          advPiste();
+          afficherPriere(PR.dame.nom, PR.dame.texte, ()=>{
+            advPiste(); finirDizaine();
+          });
+        });
+      });
+    } else {
+      lancerAve(next);
+    }
+  },700);
+}
+
+// ══════════════════════════════════════════════════
+//  FIN DE DIZAINE
+// ══════════════════════════════════════════════════
+function finirDizaine(){
+  setDot(dizaine,'faite');
+  const d2=dizaine+1;
+  if(d2>=5){ showEcran('ecran-fin'); }
+  else lancerPuzzle(d2);
+}
+
+// ══════════════════════════════════════════════════
+//  MODALS
+// ══════════════════════════════════════════════════
+function ouvrirModal(key){
+  const pr=PR[key];
+  document.getElementById('modal-titre').textContent=pr.nom;
+  document.getElementById('modal-corps').textContent=pr.texte;
+  document.getElementById('modal').classList.add('ouvert');
+}
+function fermerModal(){ document.getElementById('modal').classList.remove('ouvert'); }
+
+// ══════════════════════════════════════════════════
+//  PAUSE
+// ══════════════════════════════════════════════════
+function ouvrirPause(){
+  document.getElementById('menu-pause').classList.add('ouvert');
+}
+function fermerPause(){
+  document.getElementById('menu-pause').classList.remove('ouvert');
+}
+// Reprendre là où on était : relancer depuis le début de l'intro
+function revenirAuDepart(){
+  fermerPause();
+  pisteIdx=0; introIdx=0; aveIndex=0;
+  buildPiste(); buildDots();
+  phase='intro'; jouerIntro();
+}
+
+// ══════════════════════════════════════════════════
+//  RESET
+// ══════════════════════════════════════════════════
+function reinit(){
+  fermerPause();
+  serie=null; dizaine=0; introIdx=0; aveIndex=0; pisteIdx=0;
+  phase='menu'; _cb=null;
+  mGrid=[]; perlesLib=0; puzzleOK=false; mSel=null;
+  showEcran('ecran-menu');
+}
+
+</script>
+</body>
+</html>
